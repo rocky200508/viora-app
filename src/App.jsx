@@ -41,5 +41,5 @@ export default function App() {
       <AppRoutes />
     </AuthProvider>
   )
-}import MobileLayout from './MobileLayout';
+import MobileLayout from './MobileLayout';
 import BottomNav from './BottomNav';
