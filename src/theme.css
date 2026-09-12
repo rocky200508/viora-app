@@ -1,0 +1,39 @@
+/* Viora Design System — CSS Variables */
+:root {
+  /* Base palette */
+  --viora-bg-primary: #0F1E1C;
+  --viora-bg-secondary: #16302B;
+
+  /* Trust ring accent colors */
+  --viora-accent-trust: #4FD1AE;   /* teal — Trust */
+  --viora-accent-helpful: #C9A66B; /* gold — Helpful */
+  --viora-accent-inspired: #E8927C;/* coral — Inspired */
+
+  /* Text */
+  --viora-text-primary: #F5F5F0;
+  --viora-text-secondary: #A8B5B2;
+
+  /* Fonts */
+  --viora-font-display: 'Fraunces', serif;
+  --viora-font-body: 'Inter', sans-serif;
+
+  /* Mobile layout */
+  --viora-bottom-nav-height: 64px;
+  --viora-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --viora-max-width: 480px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--viora-bg-primary);
+  color: var(--viora-text-primary);
+  font-family: var(--viora-font-body);
+}
+
+h1, h2, h3, .viora-display {
+  font-family: var(--viora-font-display);
+}
