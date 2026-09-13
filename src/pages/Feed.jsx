@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+ import React, { useEffect, useState } from 'react'
 import TopBar from '../components/TopBar.jsx'
 import TrustRing from '../components/TrustRing.jsx'
 import { Heart, MessageCircle, Sparkles, Send } from 'lucide-react'
@@ -38,9 +38,8 @@ export default function Feed() {
     setPosting(true)
 
     const { error } = await supabase.from('posts').insert({
-  user_id: user.id,
-  content: newPost.trim(),
-})
+      user_id: user.id,
+      content: newPost.trim(),
     })
 
     if (error) {
@@ -71,7 +70,6 @@ export default function Feed() {
         ))}
       </div>
 
-      {/* New Post Box */}
       <div className="px-5 pb-4">
         <div className="bg-white rounded-2xl p-4 shadow flex flex-col gap-3">
           <textarea
@@ -104,7 +102,6 @@ export default function Feed() {
                   <p className="font-display font-semibold text-indigo-ink">
                     {author?.full_name || author?.username || 'Unknown'}
                   </p>
-                  <p className="text-[11px] text-indigo-ink/40">{post.category}</p>
                 </div>
               </div>
               <p className="text-[14px] text-indigo-ink/80 leading-relaxed">{post.content}</p>
