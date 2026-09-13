@@ -1,32 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import TopBar from '../components/TopBar.jsx'
 import TrustRing from '../components/TrustRing.jsx'
-import { Heart, MessageCircle, Sparkles } from 'lucide-react'
+import { Heart, MessageCircle, Sparkles, Send } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient.js'
+import { useAuth } from '../context/AuthContext.jsx'
 
 export default function Feed() {
+  const { user } = useAuth()
   const [posts, setPosts] = useState([])
   const [people, setPeople] = useState([])
+  const [newPost, setNewPost] = useState('')
+  const [posting, setPosting] = useState(false)
+
+  async function fetchData() {
+    const { data: profilesData, error: profilesError } = await supabase
+      .from('profiles')
+      .select('*')
+
+    const { data: postsData, error: postsError } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (profilesError) console.error('Profiles error:', profilesError)
+    if (postsError) console.error('Posts error:', postsError)
+
+    if (profilesData) setPeople(profilesData)
+    if (postsData) setPosts(postsData)
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const { data: profilesData, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*')
-
-      const { data: postsData, error: postsError } = await supabase
-        .from('posts')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (profilesError) console.error('Profiles error:', profilesError)
-      if (postsError) console.error('Posts error:', postsError)
-
-      if (profilesData) setPeople(profilesData)
-      if (postsData) setPosts(postsData)
-    }
     fetchData()
   }, [])
+
+  async function handlePost() {
+    if (!newPost.trim() || !user) return
+    setPosting(true)
+
+    const { error } = await supabase.from('posts').insert({
+      user_id: user.id,
+      content: newPost.trim(),
+      category: 'General',
+    })
+
+    if (error) {
+      console.error('Post error:', error)
+      alert('Post pannradhula problem: ' + error.message)
+    } else {
+      setNewPost('')
+      fetchData()
+    }
+    setPosting(false)
+  }
 
   return (
     <div>
@@ -44,6 +69,28 @@ export default function Feed() {
             </span>
           </div>
         ))}
+      </div>
+
+      {/* New Post Box */}
+      <div className="px-5 pb-4">
+        <div className="bg-white rounded-2xl p-4 shadow flex flex-col gap-3">
+          <textarea
+            value={newPost}
+            onChange={(e) => setNewPost(e.target.value)}
+            placeholder="Enna share pannanum?"
+            className="w-full text-[14px] text-indigo-ink resize-none outline-none min-h-[60px]"
+          />
+          <div className="flex justify-end">
+            <button
+              onClick={handlePost}
+              disabled={posting || !newPost.trim()}
+              className="flex items-center gap-1.5 bg-indigo-ink text-white text-[13px] px-4 py-2 rounded-full disabled:opacity-40"
+            >
+              <Send size={14} />
+              {posting ? 'Posting...' : 'Post'}
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="px-5 space-y-4 pb-28">
