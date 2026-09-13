@@ -38,9 +38,9 @@ export default function Feed() {
     setPosting(true)
 
     const { error } = await supabase.from('posts').insert({
-      user_id: user.id,
-      content: newPost.trim(),
-      category: 'General',
+  user_id: user.id,
+  content: newPost.trim(),
+})
     })
 
     if (error) {
