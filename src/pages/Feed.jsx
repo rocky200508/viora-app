@@ -38,8 +38,8 @@ export default function Feed() {
     setPosting(true)
 
     const { error } = await supabase.from('posts').insert({
-      user_id: user.id,
-      content: newPost.trim(),
+      author_id: user.id,
+      text: newPost.trim(),
     })
 
     if (error) {
@@ -93,7 +93,7 @@ export default function Feed() {
 
       <div className="px-5 space-y-4 pb-28">
         {posts.map((post) => {
-          const author = people.find((p) => p.id === post.user_id)
+          const author = people.find((p) => p.id === post.author_id)
           return (
             <article key={post.id} className="bg-white rounded-2xl p-4 shadow">
               <div className="flex items-center gap-3 mb-3">
@@ -104,13 +104,13 @@ export default function Feed() {
                   </p>
                 </div>
               </div>
-              <p className="text-[14px] text-indigo-ink/80 leading-relaxed">{post.content}</p>
+              <p className="text-[14px] text-indigo-ink/80 leading-relaxed">{post.text}</p>
               <div className="flex items-center gap-5 text-indigo-ink/50 mt-3">
                 <button className="flex items-center gap-1.5 text-[13px]">
-                  <Heart size={16} /> {post.likes_count || 0}
+                  <Heart size={16} /> {post.reactions?.length || 0}
                 </button>
                 <button className="flex items-center gap-1.5 text-[13px]">
-                  <MessageCircle size={16} /> 0
+                  <MessageCircle size={16} /> {post.comments?.length || 0}
                 </button>
                 <button className="flex items-center gap-1.5 text-[13px]">
                   <Sparkles size={14} /> Encourage
