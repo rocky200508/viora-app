@@ -62,9 +62,9 @@ export default function Feed() {
       <div className="px-5 pb-4 flex gap-4 overflow-x-auto no-scrollbar">
         {people.map((p) => (
           <div key={p.id} className="flex flex-col items-center gap-1 shrink-0">
-            <TrustRing name={p.full_name || p.username} score={60} size={58} />
+            <TrustRing name={p.name} score={p.trust_score || 50} size={58} />
             <span className="text-[11px] text-indigo-ink/60 max-w-[58px] truncate">
-              {p.full_name || p.username}
+              {p.name}
             </span>
           </div>
         ))}
@@ -97,10 +97,10 @@ export default function Feed() {
           return (
             <article key={post.id} className="bg-white rounded-2xl p-4 shadow">
               <div className="flex items-center gap-3 mb-3">
-                <TrustRing name={author?.full_name || 'User'} score={60} />
+                <TrustRing name={author?.name || 'User'} score={author?.trust_score || 50} />
                 <div className="flex-1">
                   <p className="font-display font-semibold text-indigo-ink">
-                    {author?.full_name || author?.username || 'Unknown'}
+                    {author?.name || 'Unknown'}
                   </p>
                 </div>
               </div>
